@@ -5,6 +5,7 @@ This app highlights how one would integrate Kaltura webcasting into a web applic
 ## Prerequisites
 
 - PHP and Apache installed on development machine
+- in AppSettings.php, replace the 6 occurences of "<INSERT_PROPER_VALUE>" with the proper values.
 
 ## Key Features
 
