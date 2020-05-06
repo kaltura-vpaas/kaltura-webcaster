@@ -26,16 +26,19 @@ $webcastEntry->recordStatus = KalturaRecordStatus::PER_SESSION; // recording per
 $webcastEntry->adminTags = "kms-webcast-event"; // for analytics tracking of source as webcast vs. source as regular live (don't change this value)
 // enabling categories duplication on recorded entry creation
 $webcastEntry->recordingOptions = new KalturaLiveEntryRecordingOptions();
-$webcastEntry->recordingOptions->shouldCopyEntitlement = KalturaNullableBoolean::TRUE_VALUE; //copy user entitlement settings from Live to Recorded VOD entry
-$webcastEntry->recordingOptions->shouldMakeHidden = true; //hide the VOD entry in KMS/KMC, only make it accessible via the Live entry
+$webcastEntry->recordingOptions->shouldCopyEntitlement = KalturaNullableBoolean::TRUE_VALUE; // copy user entitlement settings from Live to Recorded VOD entry
+$webcastEntry->recordingOptions->shouldMakeHidden = false; // hide the VOD entry in KMS/KMC, only make it accessible via the Live entry
+$webcastEntry->recordingStatus = KalturaRecordingStatus::ACTIVE;
 $webcastEntry->explicitLive = KalturaNullableBoolean::TRUE_VALUE; // should admins preview the stream BEFORE going live? To enable preview set this to true, if set to true only KS with restrictexplicitliveview privilege will be allowed to watch the stream before isLive flag is set to true. If set to false, isLive will be set automatically as broadcast from encoders begins
 $webcastEntry->pushPublishEnabled = KalturaLivePublishStatus::DISABLED; // Only enable if Multicasting is setup
 
-// get the availalbe live ingest conversion profiles;
+// get the available live ingest conversion profiles
 $filter = new KalturaConversionProfileFilter();
 $filter->typeEqual = KalturaConversionProfileType::LIVE_STREAM;
 $liveConversionProfiles = $client->conversionProfile->listAction($filter);
-// this will normally return 2: systemName=Default_Live is the Cloud Transcode, and systemName=Passthrough_Live is passthrough with no cloud transcoding. If you wish to set the entry to Passthrough, set the $webcastEntry->conversionProfileId to the respective id. For Cloud transcode leave don't override the default.
+// this will normally return 2: systemName=Default_Live is the Cloud Transcode, and systemName=Passthrough_Live
+// is passthrough with no cloud transcoding. If you wish to set the entry to Passthrough, set the
+// $webcastEntry->conversionProfileId to the respective id. For Cloud transcode leave don't override the default.
 
 $webcastEntry = $client->liveStream->add($webcastEntry, KalturaSourceType::LIVE_STREAM);
 
