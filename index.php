@@ -18,19 +18,21 @@ $client->setKS($ks);
 $webcastEntry = new KalturaLiveStreamEntry();
 $webcastEntry->name = WEBCAST_NAME.' '.date("Y-m-d H:i");
 $webcastEntry->description = WEBCAST_DESCRIPTION;
-$webcastEntry->tags = 'test';
 $webcastEntry->mediaType = KalturaMediaType::LIVE_STREAM_FLASH; //indicates rtmp/rtsp source broadcast
 $webcastEntry->dvrStatus = KalturaDVRStatus::ENABLED; //enable or disalbe DVR
 $webcastEntry->dvrWindow = 60; // how long should the DVR be, specified in minutes
+$webcastEntry->sourceType = KalturaSourceType::LIVE_STREAM;
+$webcastEntry->adminTags = "vpaas-webcast";
+$webcastEntry->pushPublishEnabled = KalturaLivePublishStatus::DISABLED;
+$webcastEntry->explicitLive = KalturaNullableBoolean::TRUE_VALUE; // should admins preview the stream BEFORE going live? To enable preview set this to true, if set to true only KS with restrictexplicitliveview privilege will be allowed to watch the stream before isLive flag is set to true. If set to false, isLive will be set automatically as broadcast from encoders begins
 $webcastEntry->recordStatus = KalturaRecordStatus::PER_SESSION; // recording per event, append all events to one recording, or disablbe recording
 $webcastEntry->adminTags = "kms-webcast-event"; // for analytics tracking of source as webcast vs. source as regular live (don't change this value)
 // enabling categories duplication on recorded entry creation
 $webcastEntry->recordingOptions = new KalturaLiveEntryRecordingOptions();
 $webcastEntry->recordingOptions->shouldCopyEntitlement = KalturaNullableBoolean::TRUE_VALUE; // copy user entitlement settings from Live to Recorded VOD entry
-$webcastEntry->recordingOptions->shouldMakeHidden = false; // hide the VOD entry in KMS/KMC, only make it accessible via the Live entry
-$webcastEntry->recordingStatus = KalturaRecordingStatus::ACTIVE;
-$webcastEntry->explicitLive = KalturaNullableBoolean::TRUE_VALUE; // should admins preview the stream BEFORE going live? To enable preview set this to true, if set to true only KS with restrictexplicitliveview privilege will be allowed to watch the stream before isLive flag is set to true. If set to false, isLive will be set automatically as broadcast from encoders begins
-$webcastEntry->pushPublishEnabled = KalturaLivePublishStatus::DISABLED; // Only enable if Multicasting is setup
+$webcastEntry->recordingOptions->shouldMakeHidden = KalturaNullableBoolean::TRUE_VALUE; // hide the VOD entry in KMS/KMC, only make it accessible via the Live entry
+$webcastEntry->recordingOptions->shouldAutoArchive = KalturaNullableBoolean::TRUE_VALUE;
+//$webcastEntry->recordingStatus = KalturaRecordingStatus::ACTIVE;
 
 // get the available live ingest conversion profiles
 $filter = new KalturaConversionProfileFilter();
@@ -185,6 +187,7 @@ $appHostUrl = '';
     <h4 class="divider">_______________</h4>
     <h3>Created Webcast Entry: <?php echo $webcastEntry->id; ?></h3>
     <h4>Entry can be found in the <a target="_blank" href="https://kmc.kaltura.com/index.php/kmcng/content/entries/list">KMC</a><h4>
+    <h4>Broadcasting URL: <?php echo $webcastEntry->primaryBroadcastingUrl; ?></h4>
     <h4 class="divider">_______________</h4>
     <h3>Prior to First Webcast</h3>
     <h4>Download Kaltura Webcast Studio</h4>
