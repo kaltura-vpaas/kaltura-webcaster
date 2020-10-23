@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2019  Kaltura Inc.
+// Copyright (C) 2006-2020  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -1639,6 +1639,25 @@ class KalturaDropFolderService extends KalturaServiceBase
 		$this->client->throwExceptionIfError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaDropFolder");
 		return $resultObject;
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param int $dropFolderId 
+	 * @param int $status 
+	 */
+	function updateStatus($dropFolderId, $status)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "dropFolderId", $dropFolderId);
+		$this->client->addParam($kparams, "status", $status);
+		$this->client->queueServiceActionCall("dropfolder_dropfolder", "updateStatus", $kparams);
+		if ($this->client->isMultiRequest())
+			return $this->client->getMultiRequestResult();
+		$resultObject = $this->client->doQueue();
+		$this->client->throwExceptionIfError($resultObject);
+		$this->client->validateObjectType($resultObject, "null");
 	}
 }
 

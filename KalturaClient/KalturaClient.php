@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2019  Kaltura Inc.
+// Copyright (C) 2006-2020  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -4032,6 +4032,27 @@ class KalturaLiveStreamService extends KalturaServiceBase
 	}
 
 	/**
+	 * Allocates a conference room or returns ones that has already been allocated
+	 * 
+	 * @param string $entryId 
+	 * @param string $env 
+	 * @return KalturaRoomDetails
+	 */
+	function allocateConferenceRoom($entryId, $env = "")
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "entryId", $entryId);
+		$this->client->addParam($kparams, "env", $env);
+		$this->client->queueServiceActionCall("livestream", "allocateConferenceRoom", $kparams);
+		if ($this->client->isMultiRequest())
+			return $this->client->getMultiRequestResult();
+		$resultObject = $this->client->doQueue();
+		$this->client->throwExceptionIfError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaRoomDetails");
+		return $resultObject;
+	}
+
+	/**
 	 * Append recorded video to live entry
 	 * 
 	 * @param string $entryId Live entry id
@@ -4057,6 +4078,27 @@ class KalturaLiveStreamService extends KalturaServiceBase
 		$resultObject = $this->client->doQueue();
 		$this->client->throwExceptionIfError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaLiveEntry");
+		return $resultObject;
+	}
+
+	/**
+	 * Archive a live entry which was recorded
+	 * 
+	 * @param string $liveEntryId 
+	 * @param string $vodEntryId 
+	 * @return bool
+	 */
+	function archive($liveEntryId, $vodEntryId)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "liveEntryId", $liveEntryId);
+		$this->client->addParam($kparams, "vodEntryId", $vodEntryId);
+		$this->client->queueServiceActionCall("livestream", "archive", $kparams);
+		if ($this->client->isMultiRequest())
+			return $this->client->getMultiRequestResult();
+		$resultObject = $this->client->doQueue();
+		$this->client->throwExceptionIfError($resultObject);
+		$resultObject = (bool) $resultObject;
 		return $resultObject;
 	}
 
@@ -4149,6 +4191,27 @@ class KalturaLiveStreamService extends KalturaServiceBase
 	}
 
 	/**
+	 * When the conf is finished this API should be called.
+	 * 
+	 * @param string $entryId 
+	 * @param int $serverNodeId 
+	 * @return bool
+	 */
+	function finishConf($entryId, $serverNodeId = null)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "entryId", $entryId);
+		$this->client->addParam($kparams, "serverNodeId", $serverNodeId);
+		$this->client->queueServiceActionCall("livestream", "finishConf", $kparams);
+		if ($this->client->isMultiRequest())
+			return $this->client->getMultiRequestResult();
+		$resultObject = $this->client->doQueue();
+		$this->client->throwExceptionIfError($resultObject);
+		$resultObject = (bool) $resultObject;
+		return $resultObject;
+	}
+
+	/**
 	 * Get live stream entry by ID.
 	 * 
 	 * @param string $entryId Live stream entry id
@@ -4172,11 +4235,30 @@ class KalturaLiveStreamService extends KalturaServiceBase
 	/**
 	 * Delivering the status of a live stream (on-air/offline) if it is possible
 	 * 
+	 * @param string $id ID of the live stream entry
+	 * @return KalturaLiveStreamDetails
+	 */
+	function getDetails($id)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "id", $id);
+		$this->client->queueServiceActionCall("livestream", "getDetails", $kparams);
+		if ($this->client->isMultiRequest())
+			return $this->client->getMultiRequestResult();
+		$resultObject = $this->client->doQueue();
+		$this->client->throwExceptionIfError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaLiveStreamDetails");
+		return $resultObject;
+	}
+
+	/**
+	 * Delivering the status of a live stream (on-air/offline) if it is possible
+	 * 
 	 * @param string $id ID of the live stream
 	 * @param string $protocol Protocol of the stream to test.
 	 * @return bool
 	 */
-	function isLive($id, $protocol)
+	function isLive($id, $protocol = null)
 	{
 		$kparams = array();
 		$this->client->addParam($kparams, "id", $id);
@@ -4229,6 +4311,25 @@ class KalturaLiveStreamService extends KalturaServiceBase
 		$resultObject = $this->client->doQueue();
 		$this->client->throwExceptionIfError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaLiveEntry");
+		return $resultObject;
+	}
+
+	/**
+	 * Mark that the conference has actually started
+	 * 
+	 * @param string $entryId 
+	 * @return bool
+	 */
+	function registerConf($entryId)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "entryId", $entryId);
+		$this->client->queueServiceActionCall("livestream", "registerConf", $kparams);
+		if ($this->client->isMultiRequest())
+			return $this->client->getMultiRequestResult();
+		$resultObject = $this->client->doQueue();
+		$this->client->throwExceptionIfError($resultObject);
+		$resultObject = (bool) $resultObject;
 		return $resultObject;
 	}
 
@@ -7555,6 +7656,23 @@ class KalturaSystemService extends KalturaServiceBase
 	/**
 	 * 
 	 * 
+	 * @return string
+	 */
+	function getHealthCheck()
+	{
+		$kparams = array();
+		$this->client->queueServiceActionCall("system", "getHealthCheck", $kparams);
+		if ($this->client->isMultiRequest())
+			return $this->client->getMultiRequestResult();
+		$resultObject = $this->client->doQueue();
+		$this->client->throwExceptionIfError($resultObject);
+		$this->client->validateObjectType($resultObject, "string");
+		return $resultObject;
+	}
+
+	/**
+	 * 
+	 * 
 	 * @return int
 	 */
 	function getTime()
@@ -9196,11 +9314,13 @@ class KalturaUserService extends KalturaServiceBase
 	 * Reset user's password and send the user an email to generate a new one.
 	 * 
 	 * @param string $email The user's email address (login email)
+	 * @param string $linkType Kmc or kms
 	 */
-	function resetPassword($email)
+	function resetPassword($email, $linkType = null)
 	{
 		$kparams = array();
 		$this->client->addParam($kparams, "email", $email);
+		$this->client->addParam($kparams, "linkType", $linkType);
 		$this->client->queueServiceActionCall("user", "resetPassword", $kparams);
 		if ($this->client->isMultiRequest())
 			return $this->client->getMultiRequestResult();
@@ -9298,6 +9418,25 @@ class KalturaUserService extends KalturaServiceBase
 		$resultObject = $this->client->doQueue();
 		$this->client->throwExceptionIfError($resultObject);
 		$this->client->validateObjectType($resultObject, "null");
+	}
+
+	/**
+	 * Validate hash key
+	 * 
+	 * @param string $hashKey The hash key used to identify the user (retrieved by email)
+	 * @return KalturaAuthentication
+	 */
+	function validateHashKey($hashKey)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "hashKey", $hashKey);
+		$this->client->queueServiceActionCall("user", "validateHashKey", $kparams);
+		if ($this->client->isMultiRequest())
+			return $this->client->getMultiRequestResult();
+		$resultObject = $this->client->doQueue();
+		$this->client->throwExceptionIfError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaAuthentication");
+		return $resultObject;
 	}
 }
 
@@ -9768,8 +9907,8 @@ class KalturaClient extends KalturaClientBase
 	{
 		parent::__construct($config);
 		
-		$this->setClientTag('php5:19-08-20');
-		$this->setApiVersion('15.5.0');
+		$this->setClientTag('php5:20-10-15');
+		$this->setApiVersion('16.9.0');
 		
 		$this->accessControlProfile = new KalturaAccessControlProfileService($this);
 		$this->accessControl = new KalturaAccessControlService($this);

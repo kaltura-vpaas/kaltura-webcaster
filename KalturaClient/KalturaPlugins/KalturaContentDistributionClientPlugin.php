@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2019  Kaltura Inc.
+// Copyright (C) 2006-2020  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -252,6 +252,7 @@ class KalturaDistributionProviderType extends KalturaEnumBase
 	const IDETIC = "ideticDistribution.IDETIC";
 	const METRO_PCS = "metroPcsDistribution.METRO_PCS";
 	const MSN = "msnDistribution.MSN";
+	const PODCAST = "podcastDistribution.PODCAST";
 	const QUICKPLAY = "quickPlayDistribution.QUICKPLAY";
 	const UNICORN = "unicornDistribution.UNICORN";
 	const YAHOO = "yahooDistribution.YAHOO";

@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2019  Kaltura Inc.
+// Copyright (C) 2006-2020  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -85,6 +85,7 @@ class KalturaMetadataObjectType extends KalturaEnumBase
 	const USER = "3";
 	const PARTNER = "4";
 	const DYNAMIC_OBJECT = "5";
+	const USER_ENTRY = "6";
 }
 
 /**

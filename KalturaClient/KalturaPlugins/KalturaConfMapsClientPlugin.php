@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2019  Kaltura Inc.
+// Copyright (C) 2006-2020  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -67,6 +67,20 @@ class KalturaConfMaps extends KalturaObjectBase
 	public $content = null;
 
 	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $rawData = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $userId = null;
+
+	/**
 	 * IsEditable - true / false
 	 *
 	 * @var bool
@@ -80,7 +94,7 @@ class KalturaConfMaps extends KalturaObjectBase
 	 * @var int
 	 * @readonly
 	 */
-	public $lastUpdate = null;
+	public $createdAt = null;
 
 	/**
 	 * Regex that represent the host/s that this map affect

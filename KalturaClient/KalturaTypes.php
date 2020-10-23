@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2019  Kaltura Inc.
+// Copyright (C) 2006-2020  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -784,6 +784,14 @@ class KalturaAsset extends KalturaObjectBase
 	 */
 	public $actualSourceAssetParamsIds = null;
 
+	/**
+	 * The size (in Bytes) of the asset
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	public $sizeInBytes = null;
+
 
 }
 
@@ -1336,6 +1344,22 @@ class KalturaBaseEntry extends KalturaObjectBase
 	 * @var KalturaEntryDisplayInSearchType
 	 */
 	public $displayInSearch = null;
+
+	/**
+	 * Entry application
+	 *
+	 * @var KalturaEntryApplication
+	 * @insertonly
+	 */
+	public $application = null;
+
+	/**
+	 * Entry application version
+	 *
+	 * @var string
+	 * @insertonly
+	 */
+	public $applicationVersion = null;
 
 
 }
@@ -2476,7 +2500,6 @@ class KalturaPartner extends KalturaObjectBase
 	 * 
 	 *
 	 * @var array of KalturaKeyValue
-	 * @insertonly
 	 */
 	public $additionalParams;
 
@@ -2551,6 +2574,14 @@ class KalturaPartner extends KalturaObjectBase
 	 * @readonly
 	 */
 	public $ignoreSeoLinks = null;
+
+	/**
+	 * 
+	 *
+	 * @var bool
+	 * @readonly
+	 */
+	public $blockDirectLogin = null;
 
 	/**
 	 * 
@@ -2652,6 +2683,70 @@ class KalturaPartner extends KalturaObjectBase
 	 * @readonly
 	 */
 	public $authenticationType = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	public $extendedFreeTrailExpiryReason = null;
+
+	/**
+	 * Unix timestamp (In seconds)
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	public $extendedFreeTrailExpiryDate = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	public $extendedFreeTrail = null;
+
+	/**
+	 * 
+	 *
+	 * @var bool
+	 * @readonly
+	 */
+	public $extendedFreeTrailEndsWarning = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	public $eightyPercentWarning = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	public $usageLimitWarning = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	public $lastFreeTrialNotificationDay = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	public $monitorUsage = null;
 
 
 }
@@ -4928,6 +5023,20 @@ class KalturaUser extends KalturaBaseUser
 	 */
 	public $loginEnabled = null;
 
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $registrationInfo = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $attendanceInfo = null;
+
 
 }
 
@@ -5172,6 +5281,23 @@ abstract class KalturaEntryServerNode extends KalturaObjectBase
  * @package Kaltura
  * @subpackage Client
  */
+class KalturaExportToCsvOptions extends KalturaObjectBase
+{
+	/**
+	 * The format of the outputted date string. There are also several predefined date constants that may be used instead, so for example DATE_RSS contains the format string 'D, d M Y H:i:s'.
+	 * 	 https://www.php.net/manual/en/function.date.php
+	 *
+	 * @var string
+	 */
+	public $format = null;
+
+
+}
+
+/**
+ * @package Kaltura
+ * @subpackage Client
+ */
 abstract class KalturaObjectIdentifier extends KalturaObjectBase
 {
 	/**
@@ -5366,6 +5492,14 @@ class KalturaMediaEntry extends KalturaPlayableEntry
 	 * @insertonly
 	 */
 	public $sourceType = null;
+
+	/**
+	 * The source version of the entry
+	 *
+	 * @var string
+	 * @insertonly
+	 */
+	public $sourceVersion = null;
 
 	/**
 	 * The search provider type used to import this entry
@@ -6841,6 +6975,55 @@ class KalturaMediaInfo extends KalturaObjectBase
 	 */
 	public $maxGOP = null;
 
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $matrixCoefficients = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $colorTransfer = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $colorPrimaries = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $pixelFormat = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $colorSpace = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $chromaSubsampling = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	public $bitsDepth = null;
+
 
 }
 
@@ -7223,6 +7406,27 @@ class KalturaLiveEntryRecordingOptions extends KalturaObjectBase
 	 */
 	public $shouldMakeHidden = null;
 
+	/**
+	 * 
+	 *
+	 * @var KalturaNullableBoolean
+	 */
+	public $shouldAutoArchive = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $nonDeletedCuePointsTags = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $archiveVodSuffixTimezone = null;
+
 
 }
 
@@ -7368,6 +7572,13 @@ abstract class KalturaLiveEntry extends KalturaMediaEntry
 	 * @readonly
 	 */
 	public $lastBroadcastEndTime = null;
+
+	/**
+	 * The time when the entry was first live with view_all
+	 *
+	 * @var int
+	 */
+	public $broadcastTime = null;
 
 
 }
@@ -7840,6 +8051,50 @@ class KalturaLiveStreamBitrate extends KalturaObjectBase
  * @package Kaltura
  * @subpackage Client
  */
+class KalturaLiveStreamDetails extends KalturaObjectBase
+{
+	/**
+	 * The status of the primary stream
+	 *
+	 * @var KalturaEntryServerNodeStatus
+	 */
+	public $primaryStreamStatus = null;
+
+	/**
+	 * The status of the secondary stream
+	 *
+	 * @var KalturaEntryServerNodeStatus
+	 */
+	public $secondaryStreamStatus = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaViewMode
+	 */
+	public $viewMode = null;
+
+	/**
+	 * 
+	 *
+	 * @var bool
+	 */
+	public $wasBroadcast = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaLiveStreamBroadcastStatus
+	 */
+	public $broadcastStatus = null;
+
+
+}
+
+/**
+ * @package Kaltura
+ * @subpackage Client
+ */
 class KalturaLiveStreamEntry extends KalturaLiveEntry
 {
 	/**
@@ -7878,6 +8133,20 @@ class KalturaLiveStreamEntry extends KalturaLiveEntry
 	 * @var string
 	 */
 	public $secondaryBroadcastingUrl = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $primarySecuredBroadcastingUrl = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $secondarySecuredBroadcastingUrl = null;
 
 	/**
 	 * 
@@ -7965,6 +8234,14 @@ class KalturaLiveStreamEntry extends KalturaLiveEntry
 	 * @readonly
 	 */
 	public $sipToken = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaSipSourceType
+	 * @readonly
+	 */
+	public $sipSourceType = null;
 
 
 }
@@ -8324,6 +8601,20 @@ abstract class KalturaBaseEntryBaseFilter extends KalturaRelatedFilter
 	/**
 	 * 
 	 *
+	 * @var float
+	 */
+	public $rankLessThanOrEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var float
+	 */
+	public $rankGreaterThanOrEqual = null;
+
+	/**
+	 * 
+	 *
 	 * @var int
 	 */
 	public $totalRankLessThanOrEqual = null;
@@ -8620,6 +8911,20 @@ class KalturaBaseEntryFilter extends KalturaBaseEntryBaseFilter
 	/**
 	 * 
 	 *
+	 * @var string
+	 */
+	public $excludedFreeTextGroups = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $descriptionLike = null;
+
+	/**
+	 * 
+	 *
 	 * @var KalturaNullableBoolean
 	 */
 	public $isRoot = null;
@@ -8667,6 +8972,13 @@ abstract class KalturaPlayableEntryBaseFilter extends KalturaBaseEntryFilter
 	 * @var int
 	 */
 	public $lastPlayedAtLessThanOrEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	public $lastPlayedAtLessThanOrEqualOrNull = null;
 
 	/**
 	 * 
@@ -9584,6 +9896,29 @@ class KalturaReportBaseTotal extends KalturaObjectBase
  * @package Kaltura
  * @subpackage Client
  */
+class KalturaReportExportFile extends KalturaObjectBase
+{
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $fileId = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $fileName = null;
+
+
+}
+
+/**
+ * @package Kaltura
+ * @subpackage Client
+ */
 class KalturaReportInputBaseFilter extends KalturaObjectBase
 {
 	/**
@@ -9715,11 +10050,25 @@ class KalturaReportInputFilter extends KalturaReportInputBaseFilter
 	public $operatingSystemFamilyIn = null;
 
 	/**
+	 * Filter by operating system
+	 *
+	 * @var string
+	 */
+	public $operatingSystemIn = null;
+
+	/**
 	 * Filter by browser family
 	 *
 	 * @var string
 	 */
 	public $browserFamilyIn = null;
+
+	/**
+	 * Filter by browser
+	 *
+	 * @var string
+	 */
+	public $browserIn = null;
 
 	/**
 	 * Time zone offset in minutes
@@ -9783,6 +10132,76 @@ class KalturaReportInputFilter extends KalturaReportInputBaseFilter
 	 * @var string
 	 */
 	public $entryIdIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $playbackTypeIn = null;
+
+	/**
+	 * filter by playback context ids
+	 *
+	 * @var string
+	 */
+	public $playbackContextIdsIn = null;
+
+	/**
+	 * filter by root entry ids
+	 *
+	 * @var string
+	 */
+	public $rootEntryIdIn = null;
+
+	/**
+	 * filter by error code
+	 *
+	 * @var string
+	 */
+	public $errorCodeIn = null;
+
+	/**
+	 * filter by player version
+	 *
+	 * @var string
+	 */
+	public $playerVersionIn = null;
+
+	/**
+	 * filter by isp
+	 *
+	 * @var string
+	 */
+	public $ispIn = null;
+
+	/**
+	 * filter by application version
+	 *
+	 * @var string
+	 */
+	public $applicationVersionIn = null;
+
+	/**
+	 * filter by node id
+	 *
+	 * @var string
+	 */
+	public $nodeIdsIn = null;
+
+	/**
+	 * filter by categories ancestor
+	 *
+	 * @var string
+	 */
+	public $categoriesAncestorIdIn = null;
+
+	/**
+	 * filter by hotspot id
+	 *
+	 * @var string
+	 */
+	public $hotspotIdIn = null;
 
 
 }
@@ -9894,6 +10313,13 @@ class KalturaReportExportParams extends KalturaObjectBase
 	 * @var array of KalturaReportExportItem
 	 */
 	public $reportItems;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $reportsItemsGroup = null;
 
 
 }
@@ -10979,6 +11405,13 @@ class KalturaStorageProfile extends KalturaObjectBase
 	 *
 	 * @var string
 	 */
+	public $pathPrefix = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
 	public $storageUsername = null;
 
 	/**
@@ -11120,6 +11553,41 @@ class KalturaStorageProfile extends KalturaObjectBase
 	 * @var bool
 	 */
 	public $shouldExportThumbs = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $packagerUrl = null;
+
+	/**
+	 * 
+	 *
+	 * @var bool
+	 */
+	public $exportPeriodically = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $excludedFlavorParamsIds = null;
+
+	/**
+	 * 
+	 *
+	 * @var bool
+	 */
+	public $shouldExportCaptions = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $excludedEntryTypes = null;
 
 
 }
@@ -11818,6 +12286,13 @@ class KalturaWidget extends KalturaObjectBase
 	 * @var string
 	 */
 	public $roles = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $privileges = null;
 
 
 }
@@ -13479,7 +13954,130 @@ class KalturaBulkUploadResultUserEntry extends KalturaBulkUploadResult
  * @package Kaltura
  * @subpackage Client
  */
+class KalturaBulkUploadResultVendorCatalogItem extends KalturaBulkUploadResult
+{
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	public $vendorCatalogItemId = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	public $vendorPartnerId = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $name = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $systemName = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaVendorServiceFeature
+	 */
+	public $serviceFeature = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaVendorServiceType
+	 */
+	public $serviceType = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaVendorServiceTurnAroundTime
+	 */
+	public $turnAroundTime = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaCatalogItemLanguage
+	 */
+	public $sourceLanguage = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaCatalogItemLanguage
+	 */
+	public $targetLanguage = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaVendorCatalogItemOutputFormat
+	 */
+	public $outputFormat = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaNullableBoolean
+	 */
+	public $enableSpeakerId = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	public $fixedPriceAddons = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaVendorCatalogItemPricing
+	 */
+	public $pricing;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	public $flavorParamsId = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	public $clearAudioFlavorParamsId = null;
+
+
+}
+
+/**
+ * @package Kaltura
+ * @subpackage Client
+ */
 class KalturaBulkUploadUserData extends KalturaBulkUploadObjectData
+{
+
+}
+
+/**
+ * @package Kaltura
+ * @subpackage Client
+ */
+class KalturaBulkUploadVendorCatalogItemData extends KalturaBulkUploadObjectData
 {
 
 }
@@ -14859,7 +15457,7 @@ class KalturaCategoryUserFilter extends KalturaCategoryUserBaseFilter
  * @package Kaltura
  * @subpackage Client
  */
-abstract class KalturaUserBaseFilter extends KalturaRelatedFilter
+abstract class KalturaBaseUserBaseFilter extends KalturaRelatedFilter
 {
 	/**
 	 * 
@@ -14867,20 +15465,6 @@ abstract class KalturaUserBaseFilter extends KalturaRelatedFilter
 	 * @var int
 	 */
 	public $partnerIdEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var KalturaUserType
-	 */
-	public $typeEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	public $typeIn = null;
 
 	/**
 	 * 
@@ -14955,6 +15539,59 @@ abstract class KalturaUserBaseFilter extends KalturaRelatedFilter
 	/**
 	 * 
 	 *
+	 * @var int
+	 */
+	public $updatedAtGreaterThanOrEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	public $updatedAtLessThanOrEqual = null;
+
+
+}
+
+/**
+ * @package Kaltura
+ * @subpackage Client
+ */
+abstract class KalturaBaseUserFilter extends KalturaBaseUserBaseFilter
+{
+
+}
+
+/**
+ * @package Kaltura
+ * @subpackage Client
+ */
+abstract class KalturaUserBaseFilter extends KalturaBaseUserFilter
+{
+	/**
+	 * 
+	 *
+	 * @var KalturaUserType
+	 */
+	public $typeEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $typeIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaNullableBoolean
+	 */
+	public $isAdminEqual = null;
+
+	/**
+	 * 
+	 *
 	 * @var string
 	 */
 	public $firstNameStartsWith = null;
@@ -14965,13 +15602,6 @@ abstract class KalturaUserBaseFilter extends KalturaRelatedFilter
 	 * @var string
 	 */
 	public $lastNameStartsWith = null;
-
-	/**
-	 * 
-	 *
-	 * @var KalturaNullableBoolean
-	 */
-	public $isAdminEqual = null;
 
 
 }
@@ -15342,6 +15972,20 @@ abstract class KalturaEntryServerNodeBaseFilter extends KalturaFilter
 	/**
 	 * 
 	 *
+	 * @var string
+	 */
+	public $serverNodeIdIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $serverNodeIdNotIn = null;
+
+	/**
+	 * 
+	 *
 	 * @var int
 	 */
 	public $createdAtLessThanOrEqual = null;
@@ -15394,6 +16038,13 @@ abstract class KalturaEntryServerNodeBaseFilter extends KalturaFilter
 	 * @var string
 	 */
 	public $serverTypeIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $serverTypeNotIn = null;
 
 
 }
@@ -15884,6 +16535,29 @@ class KalturaLiveChannelSegmentListResponse extends KalturaListResponse
 	 * @readonly
 	 */
 	public $objects;
+
+
+}
+
+/**
+ * @package Kaltura
+ * @subpackage Client
+ */
+class KalturaLiveEntryArchiveJobData extends KalturaJobData
+{
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $liveEntryId = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $vodEntryId = null;
 
 
 }
@@ -16592,6 +17266,13 @@ abstract class KalturaPartnerBaseFilter extends KalturaFilter
 	 */
 	public $idGreaterThan = null;
 
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	public $monitorUsageEqual = null;
+
 
 }
 
@@ -16906,6 +17587,20 @@ class KalturaReportExportJobData extends KalturaJobData
 	 * @var string
 	 */
 	public $filePaths = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $reportsGroup = null;
+
+	/**
+	 * 
+	 *
+	 * @var array of KalturaReportExportFile
+	 */
+	public $files;
 
 
 }
@@ -18211,6 +18906,29 @@ class KalturaUrlTokenizerKs extends KalturaUrlTokenizer
 	 * @var string
 	 */
 	public $additionalUris = null;
+
+
+}
+
+/**
+ * @package Kaltura
+ * @subpackage Client
+ */
+class KalturaUrlTokenizerL3 extends KalturaUrlTokenizer
+{
+	/**
+	 * gen
+	 *
+	 * @var string
+	 */
+	public $gen = null;
+
+	/**
+	 * paramName
+	 *
+	 * @var string
+	 */
+	public $paramName = null;
 
 
 }
@@ -19686,6 +20404,20 @@ class KalturaConvertJobData extends KalturaConvartableJobData
 	 */
 	public $engineMessage = null;
 
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $destFileSyncSharedPath = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	public $userCpu = null;
+
 
 }
 
@@ -21067,6 +21799,20 @@ class KalturaStorageExportJobData extends KalturaStorageJobData
 	 */
 	public $createLink = null;
 
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $assetId = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $externalUrl = null;
+
 
 }
 
@@ -21496,6 +22242,13 @@ class KalturaAmazonS3StorageExportJobData extends KalturaStorageExportJobData
 	 * @var string
 	 */
 	public $endPoint = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $storageClass = null;
 
 
 }
@@ -21989,6 +22742,22 @@ abstract class KalturaGoogleVideoSyndicationFeedBaseFilter extends KalturaBaseSy
  */
 class KalturaGroupUserFilter extends KalturaGroupUserBaseFilter
 {
+
+}
+
+/**
+ * @package Kaltura
+ * @subpackage Client
+ */
+class KalturaHttpHeaderCondition extends KalturaRegexCondition
+{
+	/**
+	 * header name
+	 *
+	 * @var string
+	 */
+	public $headerName = null;
+
 
 }
 
@@ -22493,15 +23262,6 @@ abstract class KalturaYahooSyndicationFeedBaseFilter extends KalturaBaseSyndicat
  * @package Kaltura
  * @subpackage Client
  */
-abstract class KalturaAdminUserBaseFilter extends KalturaUserFilter
-{
-
-}
-
-/**
- * @package Kaltura
- * @subpackage Client
- */
 class KalturaAmazonS3StorageProfileFilter extends KalturaAmazonS3StorageProfileBaseFilter
 {
 
@@ -22886,15 +23646,6 @@ class KalturaYahooSyndicationFeedFilter extends KalturaYahooSyndicationFeedBaseF
  * @package Kaltura
  * @subpackage Client
  */
-class KalturaAdminUserFilter extends KalturaAdminUserBaseFilter
-{
-
-}
-
-/**
- * @package Kaltura
- * @subpackage Client
- */
 class KalturaApiActionPermissionItemFilter extends KalturaApiActionPermissionItemBaseFilter
 {
 
@@ -23017,6 +23768,20 @@ abstract class KalturaMediaServerNodeBaseFilter extends KalturaDeliveryServerNod
  */
 class KalturaPlaylistFilter extends KalturaPlaylistBaseFilter
 {
+	/**
+	 * 
+	 *
+	 * @var KalturaPlaylistType
+	 */
+	public $playListTypeEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $playListTypeIn = null;
+
 
 }
 
@@ -23034,6 +23799,15 @@ class KalturaThumbAssetFilter extends KalturaThumbAssetBaseFilter
  * @subpackage Client
  */
 class KalturaThumbParamsFilter extends KalturaThumbParamsBaseFilter
+{
+
+}
+
+/**
+ * @package Kaltura
+ * @subpackage Client
+ */
+abstract class KalturaAdminUserBaseFilter extends KalturaUserFilter
 {
 
 }
@@ -23181,6 +23955,15 @@ abstract class KalturaThumbParamsOutputBaseFilter extends KalturaThumbParamsFilt
 	 */
 	public $thumbAssetVersionEqual = null;
 
+
+}
+
+/**
+ * @package Kaltura
+ * @subpackage Client
+ */
+class KalturaAdminUserFilter extends KalturaAdminUserBaseFilter
+{
 
 }
 

@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2019  Kaltura Inc.
+// Copyright (C) 2006-2020  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -166,6 +166,13 @@ class KalturaCaptionAsset extends KalturaAsset
 	 * @var bool
 	 */
 	public $displayOnPlayer = null;
+
+	/**
+	 * List of associated transcript asset id's, comma separated
+	 *
+	 * @var string
+	 */
+	public $associatedTranscriptIds = null;
 
 
 }
@@ -566,6 +573,27 @@ class KalturaCaptionAssetService extends KalturaServiceBase
 		$resultObject = $this->client->doQueue();
 		$this->client->throwExceptionIfError($resultObject);
 		$this->client->validateObjectType($resultObject, "null");
+	}
+
+	/**
+	 * Manually export an asset
+	 * 
+	 * @param string $assetId 
+	 * @param int $storageProfileId 
+	 * @return KalturaFlavorAsset
+	 */
+	function export($assetId, $storageProfileId)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "assetId", $assetId);
+		$this->client->addParam($kparams, "storageProfileId", $storageProfileId);
+		$this->client->queueServiceActionCall("caption_captionasset", "export", $kparams);
+		if ($this->client->isMultiRequest())
+			return $this->client->getMultiRequestResult();
+		$resultObject = $this->client->doQueue();
+		$this->client->throwExceptionIfError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaFlavorAsset");
+		return $resultObject;
 	}
 
 	/**

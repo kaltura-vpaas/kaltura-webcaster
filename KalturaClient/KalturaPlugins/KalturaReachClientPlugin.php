@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2019  Kaltura Inc.
+// Copyright (C) 2006-2020  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -35,6 +35,7 @@ require_once(dirname(__FILE__) . "/../KalturaClientBase.php");
 require_once(dirname(__FILE__) . "/../KalturaEnums.php");
 require_once(dirname(__FILE__) . "/../KalturaTypes.php");
 require_once(dirname(__FILE__) . "/KalturaEventNotificationClientPlugin.php");
+require_once(dirname(__FILE__) . "/KalturaBulkUploadClientPlugin.php");
 
 /**
  * @package Kaltura
@@ -138,6 +139,13 @@ class KalturaVendorServiceTurnAroundTime extends KalturaEnumBase
 {
 	const BEST_EFFORT = -1;
 	const IMMEDIATE = 0;
+	const ONE_BUSINESS_DAY = 1;
+	const TWO_BUSINESS_DAYS = 2;
+	const THREE_BUSINESS_DAYS = 3;
+	const FOUR_BUSINESS_DAYS = 4;
+	const FIVE_BUSINESS_DAYS = 5;
+	const SIX_BUSINESS_DAYS = 6;
+	const SEVEN_BUSINESS_DAYS = 7;
 	const THIRTY_MINUTES = 1800;
 	const TWO_HOURS = 7200;
 	const THREE_HOURS = 10800;
@@ -187,22 +195,36 @@ class KalturaCatalogItemLanguage extends KalturaEnumBase
 	const EN_GB = "English (British)";
 	const FI = "Finnish";
 	const FR = "French";
+	const FR_CA = "French (Canada)";
 	const DE = "German";
+	const EL = "Greek";
 	const HE = "Hebrew";
 	const HI = "Hindi";
+	const HU = "Hungarian";
 	const IS = "Icelandic";
+	const IN = "Indonesian";
+	const GA = "Irish";
 	const IT = "Italian";
 	const JA = "Japanese";
 	const KO = "Korean";
+	const ML = "Malayalam";
 	const CMN = "Mandarin Chinese";
 	const NO = "Norwegian";
 	const PL = "Polish";
 	const PT = "Portuguese";
+	const RO = "Romanian";
 	const RU = "Russian";
 	const ES = "Spanish";
 	const SV = "Swedish";
+	const ZH_TW = "Taiwanese Mandarin";
+	const TA = "Tamil";
 	const TH = "Thai";
 	const TR = "Turkish";
+	const UK = "Ukrainian";
+	const UR = "Urdu";
+	const VI = "Vietnamese";
+	const CY = "Welsh";
+	const ZU = "Zulu";
 }
 
 /**
@@ -544,6 +566,38 @@ class KalturaEntryVendorTask extends KalturaObjectBase
 	 */
 	public $taskJobData;
 
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	public $expectedFinishTime = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaVendorServiceType
+	 * @readonly
+	 */
+	public $serviceType = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaVendorServiceFeature
+	 * @readonly
+	 */
+	public $serviceFeature = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaVendorServiceTurnAroundTime
+	 * @readonly
+	 */
+	public $turnAroundTime = null;
+
 
 }
 
@@ -864,38 +918,6 @@ class KalturaAddEntryVendorTaskAction extends KalturaRuleAction
  * @package Kaltura
  * @subpackage Client
  */
-class KalturaAlignmentVendorTaskData extends KalturaVendorTaskData
-{
-	/**
-	 * The id of the text transcript object the vendor should use while runing the alignment task
-	 *
-	 * @var string
-	 */
-	public $textTranscriptAssetId = null;
-
-	/**
-	 * Optional - The id of the json transcript object the vendor should update once alignment task processing is done
-	 *
-	 * @var string
-	 * @insertonly
-	 */
-	public $jsonTranscriptAssetId = null;
-
-	/**
-	 * Optional - The id of the caption asset object the vendor should update once alignment task processing is done
-	 *
-	 * @var string
-	 * @insertonly
-	 */
-	public $captionAssetId = null;
-
-
-}
-
-/**
- * @package Kaltura
- * @subpackage Client
- */
 class KalturaCatalogItemAdvancedFilter extends KalturaSearchItem
 {
 	/**
@@ -1048,13 +1070,6 @@ class KalturaUnlimitedVendorCredit extends KalturaBaseVendorCredit
 	 * @var int
 	 */
 	public $fromDate = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	public $toDate = null;
 
 
 }
@@ -1215,6 +1230,47 @@ class KalturaVendorCredit extends KalturaBaseVendorCredit
 	 * @var int
 	 */
 	public $addOn = null;
+
+
+}
+
+/**
+ * @package Kaltura
+ * @subpackage Client
+ */
+abstract class KalturaVendorTaskDataCaptionAsset extends KalturaVendorTaskData
+{
+	/**
+	 * Optional - The id of the caption asset object
+	 *
+	 * @var string
+	 * @insertonly
+	 */
+	public $captionAssetId = null;
+
+
+}
+
+/**
+ * @package Kaltura
+ * @subpackage Client
+ */
+class KalturaAlignmentVendorTaskData extends KalturaVendorTaskDataCaptionAsset
+{
+	/**
+	 * The id of the text transcript object the vendor should use while runing the alignment task
+	 *
+	 * @var string
+	 */
+	public $textTranscriptAssetId = null;
+
+	/**
+	 * Optional - The id of the json transcript object the vendor should update once alignment task processing is done
+	 *
+	 * @var string
+	 * @insertonly
+	 */
+	public $jsonTranscriptAssetId = null;
 
 
 }
@@ -1388,6 +1444,20 @@ class KalturaEntryVendorTaskFilter extends KalturaEntryVendorTaskBaseFilter
 	 */
 	public $freeText = null;
 
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	public $expectedFinishTimeGreaterThanOrEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	public $expectedFinishTimeLessThanOrEqual = null;
+
 
 }
 
@@ -1529,6 +1599,15 @@ class KalturaTimeRangeVendorCredit extends KalturaVendorCredit
 	 */
 	public $toDate = null;
 
+
+}
+
+/**
+ * @package Kaltura
+ * @subpackage Client
+ */
+class KalturaTranslationVendorTaskData extends KalturaVendorTaskDataCaptionAsset
+{
 
 }
 
@@ -1854,6 +1933,32 @@ class KalturaVendorCatalogItemService extends KalturaServiceBase
 	}
 
 	/**
+	 * 
+	 * 
+	 * @param file $fileData 
+	 * @param KalturaBulkUploadJobData $bulkUploadData 
+	 * @param KalturaBulkUploadVendorCatalogItemData $bulkUploadVendorCatalogItemData 
+	 * @return KalturaBulkUpload
+	 */
+	function addFromBulkUpload($fileData, KalturaBulkUploadJobData $bulkUploadData = null, KalturaBulkUploadVendorCatalogItemData $bulkUploadVendorCatalogItemData = null)
+	{
+		$kparams = array();
+		$kfiles = array();
+		$this->client->addParam($kfiles, "fileData", $fileData);
+		if ($bulkUploadData !== null)
+			$this->client->addParam($kparams, "bulkUploadData", $bulkUploadData->toParams());
+		if ($bulkUploadVendorCatalogItemData !== null)
+			$this->client->addParam($kparams, "bulkUploadVendorCatalogItemData", $bulkUploadVendorCatalogItemData->toParams());
+		$this->client->queueServiceActionCall("reach_vendorcatalogitem", "addFromBulkUpload", $kparams, $kfiles);
+		if ($this->client->isMultiRequest())
+			return $this->client->getMultiRequestResult();
+		$resultObject = $this->client->doQueue();
+		$this->client->throwExceptionIfError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaBulkUpload");
+		return $resultObject;
+	}
+
+	/**
 	 * Delete vedor catalog item object
 	 * 
 	 * @param int $id 
@@ -1890,6 +1995,25 @@ class KalturaVendorCatalogItemService extends KalturaServiceBase
 	}
 
 	/**
+	 * 
+	 * 
+	 * @param int $vendorPartnerId 
+	 * @return string
+	 */
+	function getServeUrl($vendorPartnerId = null)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "vendorPartnerId", $vendorPartnerId);
+		$this->client->queueServiceActionCall("reach_vendorcatalogitem", "getServeUrl", $kparams);
+		if ($this->client->isMultiRequest())
+			return $this->client->getMultiRequestResult();
+		$resultObject = $this->client->doQueue();
+		$this->client->throwExceptionIfError($resultObject);
+		$this->client->validateObjectType($resultObject, "string");
+		return $resultObject;
+	}
+
+	/**
 	 * List KalturaVendorCatalogItem objects
 	 * 
 	 * @param KalturaVendorCatalogItemFilter $filter 
@@ -1910,6 +2034,25 @@ class KalturaVendorCatalogItemService extends KalturaServiceBase
 		$this->client->throwExceptionIfError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaVendorCatalogItemListResponse");
 		return $resultObject;
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param int $vendorPartnerId 
+	 * @return file
+	 */
+	function serve($vendorPartnerId = null)
+	{
+		if ($this->client->isMultiRequest())
+			throw new KalturaClientException("Action is not supported as part of multi-request.", KalturaClientException::ERROR_ACTION_IN_MULTIREQUEST);
+		
+		$kparams = array();
+		$this->client->addParam($kparams, "vendorPartnerId", $vendorPartnerId);
+		$this->client->queueServiceActionCall("reach_vendorcatalogitem", "serve", $kparams);
+		if(!$this->client->getDestinationPath() && !$this->client->getReturnServedResult())
+			return $this->client->getServeUrl();
+		return $this->client->doQueue();
 	}
 
 	/**
@@ -2257,6 +2400,31 @@ class KalturaEntryVendorTaskService extends KalturaServiceBase
 	}
 
 	/**
+	 * 
+	 * 
+	 * @param string $filterType 
+	 * @param int $filterInput 
+	 * @param int $status 
+	 * @param string $dueDate 
+	 * @return string
+	 */
+	function getServeUrl($filterType = null, $filterInput = null, $status = null, $dueDate = null)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "filterType", $filterType);
+		$this->client->addParam($kparams, "filterInput", $filterInput);
+		$this->client->addParam($kparams, "status", $status);
+		$this->client->addParam($kparams, "dueDate", $dueDate);
+		$this->client->queueServiceActionCall("reach_entryvendortask", "getServeUrl", $kparams);
+		if ($this->client->isMultiRequest())
+			return $this->client->getMultiRequestResult();
+		$resultObject = $this->client->doQueue();
+		$this->client->throwExceptionIfError($resultObject);
+		$this->client->validateObjectType($resultObject, "string");
+		return $resultObject;
+	}
+
+	/**
 	 * List KalturaEntryVendorTask objects
 	 * 
 	 * @param KalturaEntryVendorTaskFilter $filter 
@@ -2298,6 +2466,31 @@ class KalturaEntryVendorTaskService extends KalturaServiceBase
 		$this->client->throwExceptionIfError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaEntryVendorTask");
 		return $resultObject;
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param int $vendorPartnerId 
+	 * @param int $partnerId 
+	 * @param int $status 
+	 * @param string $dueDate 
+	 * @return file
+	 */
+	function serve($vendorPartnerId = null, $partnerId = null, $status = null, $dueDate = null)
+	{
+		if ($this->client->isMultiRequest())
+			throw new KalturaClientException("Action is not supported as part of multi-request.", KalturaClientException::ERROR_ACTION_IN_MULTIREQUEST);
+		
+		$kparams = array();
+		$this->client->addParam($kparams, "vendorPartnerId", $vendorPartnerId);
+		$this->client->addParam($kparams, "partnerId", $partnerId);
+		$this->client->addParam($kparams, "status", $status);
+		$this->client->addParam($kparams, "dueDate", $dueDate);
+		$this->client->queueServiceActionCall("reach_entryvendortask", "serve", $kparams);
+		if(!$this->client->getDestinationPath() && !$this->client->getReturnServedResult())
+			return $this->client->getServeUrl();
+		return $this->client->doQueue();
 	}
 
 	/**

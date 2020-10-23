@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2019  Kaltura Inc.
+// Copyright (C) 2006-2020  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -545,6 +545,17 @@ class KalturaLiveStatsEventType extends KalturaEnumBase
  * @package Kaltura
  * @subpackage Client
  */
+class KalturaLiveStreamBroadcastStatus extends KalturaEnumBase
+{
+	const OFFLINE = 1;
+	const PREVIEW = 2;
+	const LIVE = 3;
+}
+
+/**
+ * @package Kaltura
+ * @subpackage Client
+ */
 class KalturaMailJobStatus extends KalturaEnumBase
 {
 	const PENDING = 1;
@@ -733,6 +744,7 @@ class KalturaPlaylistType extends KalturaEnumBase
 	const STATIC_LIST = 3;
 	const DYNAMIC = 10;
 	const EXTERNAL = 101;
+	const PATH = 102;
 }
 
 /**
@@ -1301,8 +1313,10 @@ class KalturaAdminUserOrderBy extends KalturaEnumBase
 {
 	const CREATED_AT_ASC = "+createdAt";
 	const ID_ASC = "+id";
+	const UPDATED_AT_ASC = "+updatedAt";
 	const CREATED_AT_DESC = "-createdAt";
 	const ID_DESC = "-id";
+	const UPDATED_AT_DESC = "-updatedAt";
 }
 
 /**
@@ -1590,6 +1604,20 @@ class KalturaBaseSyndicationFeedOrderBy extends KalturaEnumBase
  * @package Kaltura
  * @subpackage Client
  */
+class KalturaBaseUserOrderBy extends KalturaEnumBase
+{
+	const CREATED_AT_ASC = "+createdAt";
+	const ID_ASC = "+id";
+	const UPDATED_AT_ASC = "+updatedAt";
+	const CREATED_AT_DESC = "-createdAt";
+	const ID_DESC = "-id";
+	const UPDATED_AT_DESC = "-updatedAt";
+}
+
+/**
+ * @package Kaltura
+ * @subpackage Client
+ */
 class KalturaBatchJobObjectType extends KalturaEnumBase
 {
 	const ENTRY_DISTRIBUTION = "contentDistribution.EntryDistribution";
@@ -1703,6 +1731,12 @@ class KalturaBatchJobType extends KalturaEnumBase
 	const COPY_CUE_POINTS = "48";
 	const EXPORT_CSV = "49";
 	const REPORT_EXPORT = "50";
+	const LIVE_ENTRY_ARCHIVE = "51";
+	const STORAGE_UPDATE = "52";
+	const STORAGE_PERIODIC_EXPORT = "53";
+	const STORAGE_PERIODIC_PURGE = "54";
+	const STORAGE_PERIODIC_DELETE_LOCAL = "55";
+	const REACH_JOB_CLEANER = "56";
 }
 
 /**
@@ -1720,6 +1754,7 @@ class KalturaBulkUploadAction extends KalturaEnumBase
 	const ADD_OR_UPDATE = "6";
 	const ACTIVATE = "7";
 	const REJECT = "8";
+	const UPDATE_STATUS = "9";
 }
 
 /**
@@ -1737,6 +1772,7 @@ class KalturaBulkUploadObjectType extends KalturaEnumBase
 	const CATEGORY_USER = "4";
 	const CATEGORY_ENTRY = "5";
 	const USER_ENTRY = "6";
+	const VENDOR_CATALOG_ITEM = "7";
 }
 
 /**
@@ -1882,6 +1918,7 @@ class KalturaConditionType extends KalturaEnumBase
 	const ANONYMOUS_IP = "15";
 	const ASSET_TYPE = "16";
 	const BOOLEAN = "17";
+	const HTTP_HEADER = "18";
 }
 
 /**
@@ -2401,6 +2438,22 @@ class KalturaEdgeServerNodeOrderBy extends KalturaEnumBase
  * @package Kaltura
  * @subpackage Client
  */
+class KalturaEntryApplication extends KalturaEnumBase
+{
+	const KMC = "0";
+	const KMS = "1";
+	const KAF = "2";
+	const PITCH = "3";
+	const KMS_GO = "4";
+	const WEBCAST_APP = "5";
+	const PERSONAL_CAPTURE = "6";
+	const KALTURA_MEETING = "7";
+}
+
+/**
+ * @package Kaltura
+ * @subpackage Client
+ */
 class KalturaEntryIdentifierField extends KalturaEnumBase
 {
 	const ID = "id";
@@ -2470,7 +2523,9 @@ class KalturaEntryStatus extends KalturaEnumBase
 class KalturaEntryType extends KalturaEnumBase
 {
 	const AUTOMATIC = "-1";
+	const CONFERENCE_ENTRY_SERVER = "conference.CONFERENCE_ENTRY_SERVER";
 	const EXTERNAL_MEDIA = "externalMedia.externalMedia";
+	const SIP_ENTRY_SERVER = "sip.SIP_ENTRY_SERVER";
 	const MEDIA_CLIP = "1";
 	const MIX = "2";
 	const PLAYLIST = "5";
@@ -2979,6 +3034,7 @@ class KalturaLanguage extends KalturaEnumBase
 	const FRP = "Franco-Prove";
 	const FRK = "Frankish";
 	const FR = "French";
+	const FR_CA = "French (Canada)";
 	const FY = "Frisian";
 	const FRR = "Frisian Northern";
 	const FUR = "Friulian";
@@ -3012,8 +3068,8 @@ class KalturaLanguage extends KalturaEnumBase
 	const HNI = "Hani";
 	const HA = "Hausa";
 	const HAW = "Hawaiian";
-	const HE = "Hebrew";
 	const IW = "Hebrew";
+	const HE = "Hebrew";
 	const HEI = "Heiltsuk";
 	const HID = "Hidatsa";
 	const HIL = "Hiligaynon";
@@ -3027,8 +3083,8 @@ class KalturaLanguage extends KalturaEnumBase
 	const KPO = "Ikposo";
 	const ILO = "Iloko";
 	const SMN = "Inari Sami";
-	const ID = "Indonesian";
 	const IN = "Indonesian";
+	const ID = "Indonesian";
 	const IZH = "Ingrian";
 	const INH = "Ingush";
 	const IA = "Interlingua";
@@ -3308,6 +3364,7 @@ class KalturaLanguage extends KalturaEnumBase
 	const TGX = "Tagish";
 	const THT = "Tahltan";
 	const TDD = "Tai Na";
+	const ZH_TW = "Taiwanese Mandarin";
 	const TG = "Tajik";
 	const TLY = "Talysh";
 	const TTQ = "Tamajaq Tawallammat";
@@ -3430,6 +3487,7 @@ class KalturaLanguageCode extends KalturaEnumBase
 	const FJ = "fj";
 	const FO = "fo";
 	const FR = "fr";
+	const FR_CA = "fr_ca";
 	const FY = "fy";
 	const GA = "ga";
 	const GD = "gd";
@@ -3552,6 +3610,7 @@ class KalturaLanguageCode extends KalturaEnumBase
 	const YI = "yi";
 	const YO = "yo";
 	const ZH = "zh";
+	const ZH_TW = "zh_tw";
 	const ZU = "zu";
 	const ZXX = "zxx";
 }
@@ -4071,6 +4130,7 @@ class KalturaMailType extends KalturaEnumBase
 	const MAIL_TYPE_VIDEO_SERVICE_NOTICE_ACCOUNT_DELETED = "84";
 	const MAIL_TYPE_VIDEO_SERVICE_NOTICE_UPGRADE_OFFER = "85";
 	const MAIL_TYPE_ACCOUNT_REACTIVE_CONFIRM = "86";
+	const MAIL_TYPE_EXTENDED_FREE_TRIAL_ENDS_WARNING = "87";
 	const MAIL_TYPE_SYSTEM_USER_RESET_PASSWORD = "110";
 	const MAIL_TYPE_SYSTEM_USER_RESET_PASSWORD_SUCCESS = "111";
 	const MAIL_TYPE_SYSTEM_USER_NEW_PASSWORD = "112";
@@ -4606,6 +4666,7 @@ class KalturaReportInterval extends KalturaEnumBase
 	const HOURS = "hours";
 	const MINUTES = "minutes";
 	const MONTHS = "months";
+	const TEN_MINUTES = "ten_minutes";
 	const TEN_SECONDS = "ten_seconds";
 }
 
@@ -4671,6 +4732,19 @@ class KalturaReportType extends KalturaEnumBase
 	const CONTENT_REPORT_REASONS = "44";
 	const PLAYER_RELATED_INTERACTIONS = "45";
 	const PLAYBACK_RATE = "46";
+	const TOP_USER_CONTENT = "47";
+	const USER_HIGHLIGHTS = "48";
+	const USER_INTERACTIVE_VIDEO = "49";
+	const INTERACTIVE_VIDEO_TOP_NODES = "50";
+	const LATEST_PLAYED_ENTRIES = "51";
+	const CATEGORY_HIGHLIGHTS = "52";
+	const SUB_CATEGORIES = "53";
+	const INTERACTIVE_VIDEO_NODE_TOP_HOTSPOTS = "54";
+	const INTERCATIVE_VIDEO_NODE_SWITCH_TOP_HOTSPOTS = "55";
+	const INTERACTIVE_VIDEO_HOTSPOT_CLICKED_PERCENTILES = "56";
+	const INTERACTIVE_VIDEO_NODE_SWITCH_HOTSPOT_CLICKED_PERCENTILES = "57";
+	const TOP_CUSTOM_VAR2 = "58";
+	const TOP_CUSTOM_VAR3 = "59";
 	const PARTNER_USAGE = "201";
 	const MAP_OVERLAY_COUNTRY_REALTIME = "10001";
 	const MAP_OVERLAY_REGION_REALTIME = "10002";
@@ -4684,6 +4758,116 @@ class KalturaReportType extends KalturaEnumBase
 	const PLATFORMS_DISCOVERY_REALTIME = "10010";
 	const PLAYBACK_TYPE_REALTIME = "10011";
 	const CONTENT_REALTIME = "10012";
+	const DISCOVERY_VIEW_REALTIME = "10013";
+	const TOP_ENDED_BROADCAST_ENTRIES = "10014";
+	const TOP_LIVE_NOW_ENTRIES = "10015";
+	const CONTENT_DROPOFF_VPAAS = "20001";
+	const TOP_SYNDICATION_VPAAS = "20002";
+	const USER_TOP_CONTENT_VPAAS = "20003";
+	const USER_USAGE_VPAAS = "20004";
+	const PLATFORMS_VPAAS = "20005";
+	const OPERATING_SYSTEM_VPAAS = "20006";
+	const BROWSERS_VPAAS = "20007";
+	const OPERATING_SYSTEM_FAMILIES_VPAAS = "20008";
+	const BROWSERS_FAMILIES_VPAAS = "20009";
+	const USER_ENGAGEMENT_TIMELINE_VPAAS = "20010";
+	const UNIQUE_USERS_PLAY_VPAAS = "20011";
+	const MAP_OVERLAY_COUNTRY_VPAAS = "20012";
+	const MAP_OVERLAY_REGION_VPAAS = "20013";
+	const MAP_OVERLAY_CITY_VPAAS = "20014";
+	const TOP_CONTENT_CREATOR_VPAAS = "20015";
+	const TOP_CONTENT_CONTRIBUTORS_VPAAS = "20016";
+	const TOP_SOURCES_VPAAS = "20017";
+	const CONTENT_REPORT_REASONS_VPAAS = "20018";
+	const PLAYER_RELATED_INTERACTIONS_VPAAS = "20019";
+	const PLAYBACK_RATE_VPAAS = "20020";
+	const PARTNER_USAGE_VPAAS = "20021";
+	const TOP_PLAYBACK_CONTEXT_VPAAS = "20022";
+	const QOE_OVERVIEW = "30001";
+	const QOE_EXPERIENCE = "30002";
+	const QOE_EXPERIENCE_PLATFORMS = "30003";
+	const QOE_EXPERIENCE_COUNTRY = "30004";
+	const QOE_EXPERIENCE_REGION = "30005";
+	const QOE_EXPERIENCE_CITY = "30006";
+	const QOE_EXPERIENCE_BROWSERS_FAMILIES = "30007";
+	const QOE_EXPERIENCE_BROWSERS = "30008";
+	const QOE_EXPERIENCE_OPERATING_SYSTEM_FAMILIES = "30009";
+	const QOE_EXPERIENCE_OPERATING_SYSTEM = "30010";
+	const QOE_EXPERIENCE_PLAYER_VERSION = "30011";
+	const QOE_EXPERIENCE_ENTRY = "30012";
+	const QOE_EXPERIENCE_ISP = "30013";
+	const QOE_ENGAGEMENT = "30014";
+	const QOE_ENGAGEMENT_PLATFORMS = "30015";
+	const QOE_ENGAGEMENT_COUNTRY = "30016";
+	const QOE_ENGAGEMENT_REGION = "30017";
+	const QOE_ENGAGEMENT_CITY = "30018";
+	const QOE_ENGAGEMENT_BROWSERS_FAMILIES = "30019";
+	const QOE_ENGAGEMENT_BROWSERS = "30020";
+	const QOE_ENGAGEMENT_OPERATING_SYSTEM_FAMILIES = "30021";
+	const QOE_ENGAGEMENT_OPERATING_SYSTEM = "30022";
+	const QOE_ENGAGEMENT_PLAYER_VERSION = "30023";
+	const QOE_ENGAGEMENT_ENTRY = "30024";
+	const QOE_ENGAGEMENT_ISP = "30025";
+	const QOE_STREAM_QUALITY = "30026";
+	const QOE_STREAM_QUALITY_PLATFORMS = "30027";
+	const QOE_STREAM_QUALITY_COUNTRY = "30028";
+	const QOE_STREAM_QUALITY_REGION = "30029";
+	const QOE_STREAM_QUALITY_CITY = "30030";
+	const QOE_STREAM_QUALITY_BROWSERS_FAMILIES = "30031";
+	const QOE_STREAM_QUALITY_BROWSERS = "30032";
+	const QOE_STREAM_QUALITY_OPERATING_SYSTEM_FAMILIES = "30033";
+	const QOE_STREAM_QUALITY_OPERATING_SYSTEM = "30034";
+	const QOE_STREAM_QUALITY_PLAYER_VERSION = "30035";
+	const QOE_STREAM_QUALITY_ENTRY = "30036";
+	const QOE_STREAM_QUALITY_ISP = "30037";
+	const QOE_ERROR_TRACKING = "30038";
+	const QOE_ERROR_TRACKING_CODES = "30039";
+	const QOE_ERROR_TRACKING_PLATFORMS = "30040";
+	const QOE_ERROR_TRACKING_BROWSERS_FAMILIES = "30041";
+	const QOE_ERROR_TRACKING_BROWSERS = "30042";
+	const QOE_ERROR_TRACKING_OPERATING_SYSTEM_FAMILIES = "30043";
+	const QOE_ERROR_TRACKING_OPERATING_SYSTEM = "30044";
+	const QOE_ERROR_TRACKING_PLAYER_VERSION = "30045";
+	const QOE_ERROR_TRACKING_ENTRY = "30046";
+	const QOE_VOD_SESSION_FLOW = "30047";
+	const QOE_LIVE_SESSION_FLOW = "30048";
+	const QOE_EXPERIENCE_CUSTOM_VAR1 = "30049";
+	const QOE_EXPERIENCE_CUSTOM_VAR2 = "30050";
+	const QOE_EXPERIENCE_CUSTOM_VAR3 = "30051";
+	const QOE_ENGAGEMENT_CUSTOM_VAR1 = "30052";
+	const QOE_ENGAGEMENT_CUSTOM_VAR2 = "30053";
+	const QOE_ENGAGEMENT_CUSTOM_VAR3 = "30054";
+	const QOE_STREAM_QUALITY_CUSTOM_VAR1 = "30055";
+	const QOE_STREAM_QUALITY_CUSTOM_VAR2 = "30056";
+	const QOE_STREAM_QUALITY_CUSTOM_VAR3 = "30057";
+	const QOE_ERROR_TRACKING_CUSTOM_VAR1 = "30058";
+	const QOE_ERROR_TRACKING_CUSTOM_VAR2 = "30059";
+	const QOE_ERROR_TRACKING_CUSTOM_VAR3 = "30060";
+	const QOE_EXPERIENCE_APPLICATION_VERSION = "30061";
+	const QOE_ENGAGEMENT_APPLICATION_VERSION = "30062";
+	const QOE_STREAM_QUALITY_APPLICATION_VERSION = "30063";
+	const QOE_ERROR_TRACKING_APPLICATION_VERSION = "30064";
+	const HIGHLIGHTS_WEBCAST = "40001";
+	const ENGAGEMENT_WEBCAST = "40002";
+	const QUALITY_WEBCAST = "40003";
+	const MAP_OVERLAY_COUNTRY_WEBCAST = "40004";
+	const MAP_OVERLAY_REGION_WEBCAST = "40005";
+	const MAP_OVERLAY_CITY_WEBCAST = "40006";
+	const PLATFORMS_WEBCAST = "40007";
+	const TOP_DOMAINS_WEBCAST = "40008";
+	const TOP_USERS_WEBCAST = "40009";
+	const ENGAGEMENT_BREAKDOWN_WEBCAST = "40010";
+	const ENGAGMENT_TIMELINE_WEBCAST = "40011";
+}
+
+/**
+ * @package Kaltura
+ * @subpackage Client
+ */
+class KalturaResetPassLinkType extends KalturaEnumBase
+{
+	const KMC = "1";
+	const KMS = "2";
 }
 
 /**
@@ -4764,6 +4948,9 @@ class KalturaServerNodeOrderBy extends KalturaEnumBase
  */
 class KalturaServerNodeType extends KalturaEnumBase
 {
+	const CONFERENCE_SERVER = "conference.CONFERENCE_SERVER";
+	const LIVE_CLUSTER_MEDIA_SERVER = "liveCluster.LIVE_CLUSTER_MEDIA_SERVER";
+	const SIP_SERVER = "sip.SIP_SERVER";
 	const WOWZA_MEDIA_SERVER = "wowza.WOWZA_MEDIA_SERVER";
 	const EDGE = "1";
 }
@@ -4975,7 +5162,9 @@ class KalturaUserEntryStatus extends KalturaEnumBase
 class KalturaUserEntryType extends KalturaEnumBase
 {
 	const QUIZ = "quiz.QUIZ";
+	const REGISTRATION = "registration.REGISTRATION";
 	const VIEW_HISTORY = "viewHistory.VIEW_HISTORY";
+	const WATCH_LATER = "watchLater.WATCH_LATER";
 }
 
 /**
@@ -4994,8 +5183,10 @@ class KalturaUserOrderBy extends KalturaEnumBase
 {
 	const CREATED_AT_ASC = "+createdAt";
 	const ID_ASC = "+id";
+	const UPDATED_AT_ASC = "+updatedAt";
 	const CREATED_AT_DESC = "-createdAt";
 	const ID_DESC = "-id";
+	const UPDATED_AT_DESC = "-updatedAt";
 }
 
 /**
