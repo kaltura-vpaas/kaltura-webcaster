@@ -3,19 +3,20 @@ date_default_timezone_set('America/New_York');
 require_once('../KalturaClient/KalturaClient.php');
 require_once('../AppSettings.php');
 
-$userRole = 'adminRole'; // correleates to KMS roles: adminRole, viewerRole, unmoderatedAdminRole, privateOnlyRole
-$webcastEntryId = $_GET['entryId'];
-$myHostingAppName = 'myCustomWebcastApp'; // set this to a simple alpha-numeric string that represents your hosting application name (the app that embeds the webcast)
-$myHostingAppDomain = 'my.customwebcast.com';
+// Live stream entry ID
+$liveStreamEntryId = $_GET['entryId'];
 
+// Get Kaltura client
 $config = new KalturaConfiguration();
 $config->setServiceUrl('https://www.kaltura.com');
 $client = new KalturaClient($config);
-$ks = $client->generateSession(API_ADMIN_SECRET, UNIQUE_USER_ID, KalturaSessionType::ADMIN, PARTNER_ID, KS_EXPIRY);
+$ks = $client->generateSession(API_ADMIN_SECRET, VIEWER_USER_ID, KalturaSessionType::ADMIN, PARTNER_ID, KS_EXPIRY);
 $client->setKS($ks);
 
-$liveStreamEntry = $client->liveStream->get($webcastEntryId);
-$isLive = $client->liveStream->isLive($webcastEntryId, KalturaPlaybackProtocol::AUTO);
+// Get the entry associated to the webcast
+$liveStreamEntry = $client->liveStream->get($liveStreamEntryId);
+$isLive = $client->liveStream->isLive($liveStreamEntryId, KalturaPlaybackProtocol::AUTO);
+$webcastEntryId = $liveStreamEntryId;
 if ($isLive == false) {
     if (isset($liveStreamEntry->redirectEntryId) && $liveStreamEntry->redirectEntryId != '') 
         $webcastEntryId = $liveStreamEntry->redirectEntryId;
@@ -23,9 +24,9 @@ if ($isLive == false) {
         $webcastEntryId = $liveStreamEntry->recordedEntryId;
 }
 
-// Create the Kaltura Session and set it to the KalturaClient
-$ksPrivileges = 'sview:'.$webcastEntryId.',restrictexplicitliveview:'.$webcastEntryId.',enableentitlement,appid:'.$myHostingAppName.'-$myHostingAppDomain,sessionkey:'.UNIQUE_USER_ID;
-$ks = $client->generateSession(API_ADMIN_SECRET, UNIQUE_USER_ID, KalturaSessionType::USER, PARTNER_ID, KS_EXPIRY, $ksPrivileges);
+// Create the Kaltura Session and set it to the Kaltura Client
+$ksPrivileges = 'sview:'.$webcastEntryId.',restrictexplicitliveview:'.$webcastEntryId.',enableentitlement,appid:'.APP_ID.',appdomain:'.APP_DOMAIN.'sessionkey:'.VIEWER_USER_ID;
+$ks = $client->generateSession(API_ADMIN_SECRET, VIEWER_USER_ID, KalturaSessionType::USER, PARTNER_ID, KS_EXPIRY, $ksPrivileges);
 $client->setKS($ks);
 ?>
 
@@ -78,38 +79,37 @@ $client->setKS($ks);
     </div>
 
     <script>
-	  kWidget.embed({
-		"targetId": "kaltura_player",
-		"wid": "_<?php echo PARTNER_ID;?>",
-		"uiconf_id": <?php echo PLAYER_UI_CONF;?>,
-		"flashvars":
-			{
-        "ks": "<?php echo $ks;?>",
-				"applicationName": "<?php echo $myHostingAppName; ?>",
-				"disableAlerts": "false",
-				"externalInterfaceDisabled": "false",
-        "IframeCustomPluginCss1": "custom.css", // this CSS hides the QNA button
-				"autoPlay": "true",
-				"dualScreen": {"plugin": "true"},
-				"chapters": {"plugin": "true"},
-				"sideBarContainer": {"plugin": "true"},
-				"LeadWithHLSOnFlash": "true",
-				"EmbedPlayer.LiveCuepoints": "true",
-				"EmbedPlayer.EnableIpadNativeFullscreen": "true",
-				"qna": {
-					"plugin": "true",
-					"moduleWidth": "200",
-					"containerPosition": "right",
-					"qnaPollingInterval": "10000",
-					"onPage": "true",
-					"userId": "<?php echo UNIQUE_USER_ID; ?>",
-					"userRole": "<?php echo $userRole; ?>",
-					"qnaTargetId": "qnaListHolder"
-				},
-				"webcastPolls": {"plugin": "true", "userId": "<?php echo UNIQUE_USER_ID; ?>", "userRole": "<?php echo $userRole; ?>"}
-			},
-		"entry_id": "<?php echo $webcastEntryId; ?>"
-	  });
+      kWidget.embed({
+        "targetId": "kaltura_player",
+        "wid": "_<?php echo PARTNER_ID;?>",
+        "uiconf_id": <?php echo PLAYER_UI_CONF;?>,
+        "flashvars": {
+          "ks": "<?php echo $ks;?>",
+          "applicationName": "<?php echo APP_ID; ?>",
+          "disableAlerts": "false",
+          "externalInterfaceDisabled": "false",
+          "IframeCustomPluginCss1": "custom.css", // this CSS hides the QNA button
+          "autoPlay": "true",
+          "dualScreen": {"plugin": "true"},
+          "chapters": {"plugin": "true"},
+          "sideBarContainer": {"plugin": "true"},
+          "LeadWithHLSOnFlash": "true",
+          "EmbedPlayer.LiveCuepoints": "true",
+          "EmbedPlayer.EnableIpadNativeFullscreen": "true",
+          "qna": {
+            "plugin": "true",
+            "moduleWidth": "200",
+            "containerPosition": "right",
+            "qnaPollingInterval": "10000",
+            "onPage": "true",
+            "userId": "<?php echo VIEWER_USER_ID; ?>",
+            "userRole": "adminRole", // adminRole, viewerRole, unmoderatedAdminRole, privateOnlyRole
+            "qnaTargetId": "qnaListHolder"
+          },
+          "webcastPolls": {"plugin": "true", "userId": "<?php echo VIEWER_USER_ID; ?>", "userRole": "adminRole"}
+        },
+        "entry_id": "<?php echo $webcastEntryId; ?>"
+      });
     </script>
 
   </body>
